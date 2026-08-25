@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prince ❤️ Vanessa — Love Challenge</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#0b3d2e,#123c69);color:white;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+.card{width:100%;max-width:520px;background:rgba(255,255,255,.12);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:24px;text-align:center;box-shadow:0 15px 45px #0006}
+h1{margin:4px 0 8px;font-size:30px}.sub{opacity:.85;margin-bottom:20px}.names{font-size:22px;font-weight:bold;margin:14px 0}.score{display:flex;justify-content:space-around;background:#0003;border-radius:15px;padding:12px;margin:15px 0}.score div{font-size:14px}.score b{display:block;font-size:25px}
+.progress{height:8px;background:#ffffff33;border-radius:8px;overflow:hidden;margin:16px 0}.bar{height:100%;width:0;background:#fff;border-radius:8px;transition:.3s}
+#question{font-size:23px;line-height:1.35;margin:22px 0}.turn{font-weight:bold;font-size:16px}
+button{width:100%;border:0;border-radius:14px;padding:15px;margin:7px 0;font-size:16px;font-weight:bold;cursor:pointer;background:white;color:#123c69}
+button:hover{transform:scale(1.01)}.secondary{background:#ffffff22;color:white;border:1px solid #ffffff55}.hidden{display:none}
+.result{font-size:26px;font-weight:bold;margin:20px 0}.small{font-size:13px;opacity:.75;margin-top:15px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div id="start">
+    <div style="font-size:55px">❤️</div>
+    <h1>Prince ❤️ Vanessa</h1>
+    <div class="sub">LOVE CHALLENGE</div>
+    <p>Take turns answering romantic questions and completing fun challenges.</p>
+    <button onclick="startGame()">Start Game 🎮</button>
+    <button class="secondary" onclick="share()">Share on WhatsApp 📲</button>
+  </div>
+
+  <div id="game" class="hidden">
+    <h1>Prince ❤️ Vanessa</h1>
+    <div class="score">
+      <div>Prince<b id="pScore">0</b></div>
+      <div>Vanessa<b id="vScore">0</b></div>
+    </div>
+    <div class="turn" id="turn"></div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div id="question"></div>
+    <button onclick="answer(1)">❤️ Done / Yes</button>
+    <button onclick="answer(2)">😂 Very Funny / Extra Point</button>
+    <button class="secondary" onclick="answer(0)">Skip</button>
+  </div>
+
+  <div id="end" class="hidden">
+    <div style="font-size:60px">🏆</div>
+    <h1>Game Over!</h1>
+    <div class="result" id="winner"></div>
+    <p id="finalScore"></p>
+    <button onclick="startGame()">Play Again 🔄</button>
+    <button class="secondary" onclick="share()">Challenge Another Couple 📲</button>
+  </div>
+  <div class="small">Made for Prince & Vanessa ❤️</div>
+</div>
+
+<script>
+const questions=[
+"Tell your partner one thing you genuinely love about them. ❤️",
+"Who fell in love first? Give a funny explanation. 😂",
+"Describe your perfect date together in 10 seconds. 🌹",
+"Send your partner a sweet compliment right now. 💕",
+"What is your funniest memory together?",
+"If you could travel anywhere with your partner, where would you go? ✈️",
+"Give your partner a romantic nickname and explain it.",
+"Who is more stubborn? Both must agree! 😂",
+"Say 'I love you' in your funniest voice.",
+"What is one dream you want the two of you to achieve together? 🌟",
+"Do a 10-second dance and let your partner judge it. 💃",
+"Name three things that make your partner special.",
+"Who would survive longer without their phone? 📱",
+"Give your partner a virtual hug. 🤗",
+"Finish this sentence: 'Our love is special because...'",
+"Take turns saying one thing you appreciate about each other.",
+"Who is more likely to make the other laugh?",
+"Make a one-line love poem for your partner. ✍️",
+"What song reminds you of your relationship? 🎵",
+"Promise one beautiful thing you will do together someday. ❤️"
+];
+
+let i=0,p=0,v=0,turn=0;
+
+function startGame(){
+ i=0;p=0;v=0;turn=0;
+ document.getElementById('start').classList.add('hidden');
+ document.getElementById('end').classList.add('hidden');
+ document.getElementById('game').classList.remove('hidden');
+ show();
+}
+function show(){
+ document.getElementById('pScore').textContent=p;
+ document.getElementById('vScore').textContent=v;
+ document.getElementById('turn').textContent=(turn%2===0?"Prince's turn 👑":"Vanessa's turn 👑");
+ document.getElementById('question').textContent=questions[i];
+ document.getElementById('bar').style.width=((i)/questions.length*100)+'%';
+}
+function answer(points){
+ if(points===1) turn%2===0?p++:v++;
+ if(points===2) turn%2===0?p+=2:v+=2;
+ i++;turn++;
+ if(i>=questions.length){endGame();return}
+ show();
+}
+function endGame(){
+ document.getElementById('game').classList.add('hidden');
+ document.getElementById('end').classList.remove('hidden');
+ let text=p===v?"It's a TIE! ❤️":p>v?"Prince wins! 👑":"Vanessa wins! 👑";
+ document.getElementById('winner').textContent=text;
+ document.getElementById('finalScore').textContent=`Prince: ${p} points • Vanessa: ${v} points`;
+}
+function share(){
+ const text="❤️ Prince & Vanessa — Love Challenge! ❤️\\nPlay our couple game together!";
+ const url=location.href;
+ const wa="https://wa.me/?text="+encodeURIComponent(text+"\\n"+url);
+ window.open(wa,"_blank");
+}
+</script>
+</body>
+</html>
